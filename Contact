@@ -1,0 +1,250 @@
+class Contact implements Comparable<Contact>{
+  private String firstName = "";
+  private String lastName = "";
+  private String phoneNumber = "";
+  private String address = "";
+  private String city = "";
+  private String state = "";
+
+
+  public Contact(String firstName, String lastName, String phoneNumber, String address, String city, String state){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.city = city;
+    this.state = state;
+  }
+  public Contact(String firstName, String lastName, String phoneNumber){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+  }
+
+  public void setFirstName(String s){
+    this.firstName = s;
+  }
+  public String getFirstName(){
+    return firstName;
+  }
+
+  public void setLastName(String s){
+    this.lastName = s;
+  }
+  public String getLastName(){
+    return lastName;
+  }
+
+  public void setPhoneNumber(String s){
+    this.phoneNumber = s;
+  }
+  public String getPhoneNumber(){
+    return phoneNumber;
+  }
+
+  public void setAddress(String s){
+    this.address = s;
+  }
+  public String getAddress(){
+    return address;
+  }
+
+   public void setCity(String s){
+    this.city = s;
+  }
+  public String getCity(){
+    return city;
+  }
+
+  public void setState(String s){
+    this.state = s;
+  }
+  public String getState(){
+    return state;
+  }
+  public void updateContact(String firstName, String lastName, String phoneNumber, String address, String city, String state){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.city = city;
+    this.state = state;
+  }
+ 
+
+  public boolean equals(Object obj){
+    if(!(obj instanceof Contact)){
+      return false;
+    }
+    Contact o = (Contact) obj;
+    
+    if((o.getLastName().equals(lastName)) && (o.getFirstName().equals(firstName))){
+      return true;
+    }
+    return false;
+  }
+
+  public String toString(){
+    return(firstName + " " + lastName + "\t" + "\t" + "Phone number: " + phoneNumber + "\n" + address + "\n" + city + " , " + state + "\n");
+  }
+  public int compareTo(Contact another){
+
+    int last = this.lastName.compareTo(another.getLastName());
+
+    if(this.equals(another)){
+      return 0;
+    }
+
+    if(last != 0){
+      last = this.lastName.compareTo(another.getLastName());
+    }
+    else if(last == 0){
+      last = this.firstName.compareTo(another.getFirstName());
+    }
+      return last;
+  }
+}
+
+
+
+class ContactList implements Iterable<Contact>{
+
+ private ArrayList<Contact> contactList = new ArrayList<Contact>();
+ private int logicalLength = 0;
+
+  public ContactList(){
+  }
+   public ContactList(Contact[] contacts){
+    for(Contact c: contacts){
+      this.contactList.add(c);
+    }
+  }
+  
+  
+
+  public Contact findByLastName(String last){
+    Contact findLastNameOf = new Contact("",last,"");
+    int index = binarySearch(contactList, findLastNameOf);
+    if(index < 0){
+        return null;
+    }else{
+      return contactList.get(index);
+    }
+  }
+
+  public Contact findByPhoneNumber(String phone){
+    Contact findPhoneNumberOf = new Contact("","",phone);
+    int index = binarySearch(contactList, findPhoneNumberOf);
+    if(index < 0){
+     return null;
+    }else{
+      return contactList.get(index);
+    }
+  }
+
+  public ContactList findAllByLastInitial(char ch){
+     ContactList newContact = new 
+     ContactList();
+      for(Contact str: contactList){
+      if(str.getLastName().contains(ch + "")){
+          newContact.add(str);
+      }
+    }
+      return newContact;
+  }
+
+  public ContactList findAllByCity(String city){
+    ContactList newContact = new ContactList();
+
+    for(Contact str: contactList){
+      if(str.getCity().equalsIgnoreCase(city)){
+         newContact.add(str);
+      }
+    }
+    return newContact;
+  }
+
+  public boolean add(Contact c){
+    if (Collections.binarySearch(contactList,c) >= 0) {
+      return false;
+    } else {
+      contactList.add(c);
+      logicalLength++;
+    }
+  return true;
+ }
+  public int size(){
+    return logicalLength;
+  }
+
+  public Contact remove(Object obj){
+     if(!(obj instanceof Contact)){
+      return null;
+    }
+    Contact o = (Contact) obj;
+
+    int index = contactList.indexOf(o);
+    Contact old = contactList.get(index);
+  
+    for(int i = index + 1; i < size(); i++){
+      contactList.set(i-1,contactList.get(i));
+    }
+    logicalLength--;
+    return old;
+  }
+
+  public Contact get(int index){
+    if(index < 0 || index >= size())
+      throw new IndexOutOfBoundsException();
+    return contactList.get(index);
+  }
+
+  public boolean equals(Object obj){
+     if(!(obj instanceof Contact)){
+      return false;
+    }
+    ContactList another = (ContactList) obj;
+    
+    if(size() != another.size())
+      return false;
+    for(int i = 0; i < size(); i++){
+      if(!(contactList.get(i).equals(another.contactList.get(i))))
+        return false;
+    }
+    return true;
+  }
+
+  public String toString(){
+    StringBuilder sb = new StringBuilder("[ ");
+        for(int i=0; i<logicalLength; i++) {
+            sb.append(contactList.get(i));
+            if(i < size()-1)
+                sb.append(", ");
+        }
+        
+        sb.append("]");
+        
+        return sb.toString();
+  }
+  public Iterator<Contact> iterator(){
+    return contactList.iterator();
+  }
+  public int binarySearch(ArrayList<Contact> arr,Contact x){
+    int left = 0;
+    int right = size()-1;
+
+    while(left <= right){
+      int mid = left+(right - left)/2;
+      int res = x.compareTo(arr.get(mid));
+      if(res == 0){
+        return mid;
+      }
+        if(res > 0)
+          left = mid + 1;
+        else 
+          right = mid -1;
+    }
+    return -1;
+    
+  }
+}
