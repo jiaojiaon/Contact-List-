@@ -1,0 +1,20 @@
+import java.util.*;
+import java.util.Collections;
+class Main {
+  public static void main(String[] args) {
+    Contact c1 = new Contact("Ari","Mermelstein","(718)111-1111","2900 Beford Avenue", "Broolyn", "NY");
+    Contact c2 = new Contact("Brianna","Bee","(718)111-1112","2900 Beford Avenue", "Staten Island", "NJ");
+    Contact c3 = new Contact("Ari","Aerm","(718)111-1113","2900 Beford Avenue", "Broolyn", "NY");
+    Contact c4 = new Contact("Sophia","Book","(718)111-1114","2900 Beford Avenue", "Staten Island", "NJ");
+    Contact c5 = new Contact("Joe","Dong","(718)111-1115","2900 Beford Avenue", "Broolyn", "NY");
+    
+    Contact[] arr = {c1, c2, c3, c4, c5};
+    ContactList c = new ContactList(arr);
+
+    System.out.println(c.findByLastName("Book"));
+
+    System.out.println(c.findByPhoneNumber("(718)111-1113"));
+     System.out.println(c.findAllByLastInitial('B'));
+     System.out.println(c.findAllByCity("Broolyn"));
+  }
+}
