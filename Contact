@@ -33,7 +33,6 @@ class Contact implements Comparable<Contact>{
   }
   public String getLastName(){
     return lastName;
-    
   }
 
   public void setPhoneNumber(String s){
